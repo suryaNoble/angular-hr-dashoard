@@ -1,7 +1,7 @@
 name: Build and Deploy
 on:
   push:
-    branches: [main] 
+    branches: [main]
 permissions:
   contents: write
 jobs:
@@ -14,15 +14,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Angular 21 requires modern Node
+          node-version: '22'
 
       - name: Install and Build
         run: |
           npm install
-          npx ng build --configuration production --base-href=/${{ github.event.repository.name }}/
+          # We keep the base-href as the repo name so the URL works
+          npx ng build --configuration production --base-href=/angular-hr-dashoard/
 
       - name: Deploy to GH Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist/${{ github.event.repository.name }}/browser # Path for Angular 17+
+          # CHANGE THIS LINE specifically to match your internal project name
+          folder: dist/hr-management-system/browser 
           branch: gh-pages
